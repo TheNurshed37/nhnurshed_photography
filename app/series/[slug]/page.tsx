@@ -1,7 +1,7 @@
 'use client';
 
 import { useParams } from 'next/navigation';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, type ReactNode } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -12,7 +12,7 @@ const menuItems = [
   { label: 'Contact', href: '/contact' },
 ];
 
-const seriesData: Record<string, { title: string; description: string }> = {
+const seriesData: Record<string, { title: string; description: string | ReactNode[] }> = {
   series1: {
     title: 'Jatra',
     description: `Jatra, a journey we all attempt, is a path shaped by our desires and dreams, whether driven by necessity, competition, or the pursuit of something greater. This journey, perhaps destined by the Almighty, remains a mystery as we navigate through the landscape of our ambitions. We dream of love, knowledge, and the magic that transforms the mundane into the extraordinary — a blue moonlit night in a city filled with chaos, or a railway line spreading endlessly onto the horizon. But true satisfaction lies not in dreams alone.
@@ -47,11 +47,12 @@ Rather than offering fixed narratives, the series invites viewers to wander thro
   },
   series5: {
     title: 'Where Is My Home?',
-    description: `Along the fragile coastline of Matarbari, the sea no longer feels distant. After Cyclone Shakti swept through the coastal communities of Cox's Bazar in May 2025, homes, memories, and familiar landscapes were left altered by water and wind.
-
-This long-term project follows the quiet aftermath of displacement — the uncertainty of people living between erosion and survival, between memory and rebuilding. Through intimate moments and coastal landscapes, Where Is My Home? reflects on the emotional weight of losing place, while questioning what "home" truly means when the land itself becomes unstable.
-
-The project is not only about destruction, but also about endurance: the resilience of communities who continue to stand beside the sea, even as it slowly redraws the boundaries of their lives.`,
+    description: [
+      <>Along the beach of Matarbari from Cox’s Bazar district of Bangladesh, life unfolds beside an ocean that sustains communities while constantly reshaping the land beneath them. Made between February and June 2025, this series observes everyday life before and after a cyclone struck the area at the end of May.</>,
+      <><em>Where Is My Home?</em> asks a simple but unsettling question: <strong>What does it mean to belong to a place that cannot promise to remain?</strong></>,
+      <>For the people of Matarbari, storms, erosion, rising water, and changing weather are not distant consequences of climate change. They are part of the landscape of everyday life. Homes are repaired, work resumes, families carry on, and ordinary routines continue — while the possibility of losing what they have built remains ever-present. Rather than focusing only on the moment of disaster, the series looks at what happens in between: the quiet persistence of people living, working, rebuilding, and adapting beside a changing sea.</>,
+      <>Here, home is not necessarily a permanent structure. It is a place repeatedly rebuilt, inhabited, remembered, and defended against forces beyond one’s control. <strong>In a landscape that is constantly changing, perhaps the question is not where home is, but how long a home can remain a home.</strong></>,
+    ],
   },
 };
 
@@ -176,7 +177,10 @@ export default function SeriesPage() {
 
           {/* Description */}
           <div className="space-y-5">
-            {series.description.split('\n\n').map((paragraph, i) => (
+            {(typeof series.description === 'string'
+              ? series.description.split('\n\n')
+              : series.description
+            ).map((paragraph, i) => (
               <p key={i} className="text-base text-gray-600 font-light leading-relaxed">
                 {paragraph}
               </p>
